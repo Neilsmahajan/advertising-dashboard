@@ -1,0 +1,9 @@
+2024-12-05 05:02:37,780 [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-12-05 05:02:37,780 [33mPress CTRL+C to quit[0m
+2024-12-05 05:02:37,781  * Restarting with stat
+2024-12-05 05:02:37,944  * Debugger is active!
+2024-12-05 05:02:37,953  * Debugger PIN: 120-866-696
+2024-12-05 05:02:55,192 127.0.0.1 - - [05/Dec/2024 05:02:55] "OPTIONS /api/analyze HTTP/1.1" 200 -
+2024-12-05 05:02:55,196 Received request for URL: https://www.google.com
+2024-12-05 05:02:55,430 127.0.0.1 - - [05/Dec/2024 05:02:55] "POST /api/analyze HTTP/1.1" 200 -

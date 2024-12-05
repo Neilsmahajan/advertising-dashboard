@@ -36,8 +36,3 @@ This project is a web-based advertising analytics dashboard designed for Vloe, a
 Email: nsmahaj1@asu.edu<br>
 Personal Email: neilsmahajan@gmail.com<br>
 LinkedIn: [Neil Mahajan](https://www.linkedin.com/in/neil-mahajan/)<br>
-
-# Notes
-Google Analytics, Linkedin, Pintrest, X, Meta, Mailchimp, Cyberimpact, TikTok, Snapchat, Bing, Google Ads, Google Merchant Center, Google Tag Manager
-
-Screenshot of the dashboards of the analytics on every platform

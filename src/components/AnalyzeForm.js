@@ -5,14 +5,19 @@ const AnalyzeForm = () => {
   const [url, setUrl] = useState('');
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleAnalyze = async () => {
+    setLoading(true);
+    setError(null);
+    setResult(null);
     try {
-      setError(null);  // Clear previous errors
       const response = await axios.post('http://127.0.0.1:5000/api/analyze', { url });
       setResult(response.data);
     } catch (err) {
       setError(err.response?.data?.error || 'An error occurred');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -25,7 +30,9 @@ const AnalyzeForm = () => {
         value={url}
         onChange={(e) => setUrl(e.target.value)}
       />
-      <button onClick={handleAnalyze}>Analyze</button>
+      <button onClick={handleAnalyze} disabled={loading}>
+        {loading ? 'Analyzing...' : 'Analyze'}
+      </button>
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {result && (
@@ -34,7 +41,12 @@ const AnalyzeForm = () => {
           <p><strong>URL:</strong> {result.url}</p>
           <p><strong>SEO Score:</strong> {result.seo_score}</p>
           <p><strong>Advertising Platforms:</strong> {result.ads_platforms.join(', ')}</p>
-          <p><strong>Issues:</strong> {result.issues.join(', ')}</p>
+          <p><strong>Issues:</strong></p>
+          <ul>
+            {result.issues.map((issue, index) => (
+              <li key={index}>{issue}</li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
