@@ -7,6 +7,20 @@ This project is a web-based advertising analytics dashboard designed for Vloe, a
 - Integrate advertising platforms like Google Ads, Facebook Ads, and Bing Ads
 - Localization support for French and English
 - Exportable and visually appealing analytics reports
+- Screenshot or scrape data from advertising platforms:
+  - Google Analytics
+  - LinkedIn
+  - Pinterest
+  - X (formerly Twitter)
+  - Meta (Facebook and Instagram Ads)
+  - Mailchimp
+  - Cyberimpact
+  - TikTok
+  - Snapchat
+  - Bing
+  - Google Ads
+  - Google Merchant Center
+  - Google Tag Manager
 
 ## Technology Stack
 - **Frontend**: React.js (with i18next for localization)
@@ -18,18 +32,40 @@ This project is a web-based advertising analytics dashboard designed for Vloe, a
 1. Clone the repository:
    ```bash
    git clone https://github.com/Neilsmahajan/advertising-dashboard.git
+   ```
    cd advertising-dashboard
 2. Install dependencies:
     ```bash
     npm install --legacy-peer-deps
-3. Start the development server:
+    ```
+3. Start the frontend development server:
     ```bash
     npm start
-4. Run the backend server (Python):
+    ```
+4. Install dependencies for the backend:
     ```bash
     cd backend
-    source venv/bin/activate
+    python3 -m venv venv
+    source venv/bin/activate  # On macOS/Linux
+    pip install -r requirements.txt
+    ```
+5. Run the backend server (Python):
+    ```bash
     python app.py
+    ```
+6. To deploy the backend for production:
+    ```bash
+    gunicorn -w 4 -b 0.0.0.0:5000 app:app
+    ```
+7. To build the frontend for production:
+    ```bash
+    npm run build
+    ```
+## Planned Enhancements
+- Add the ability to scrape or take screenshots of advertising platform dashboards.
+- Automate authentication and API integration for supported advertising platforms.
+- Generate and download PDF reports with combined analytics and screenshots.
+
 ## Contact
   
 **Neil Mahajan**<br>
