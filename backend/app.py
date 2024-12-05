@@ -2,13 +2,25 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from bs4 import BeautifulSoup
 import requests
+from googleapiclient.discovery import build
+from google.oauth2.service_account import Credentials
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 import logging
 
+# Initialize Flask app
 app = Flask(__name__)
-CORS(app)  # Enable Cross-Origin Resource Sharing
+CORS(app)
 
 # Configure logging
 logging.basicConfig(filename='backend.log', level=logging.INFO, format='%(asctime)s %(message)s')
+
+# Google Analytics credentials
+SCOPES = ['https://www.googleapis.com/auth/analytics.readonly']
+SERVICE_ACCOUNT_FILE = 'path/to/credentials.json'  # Replace with actual path
+
 
 @app.route('/api/analyze', methods=['POST'])
 def analyze():
@@ -47,5 +59,46 @@ def analyze():
         return jsonify(result)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+@app.route('/api/google-analytics', methods=['POST'])
+def google_analytics():
+    try:
+        credentials = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+        analytics = build('analyticsreporting', 'v4', credentials=credentials)
+
+        # Example request to fetch session data
+        body = {
+            'reportRequests': [{
+                'viewId': 'VIEW_ID',  # Replace with actual View ID
+                'dateRanges': [{'startDate': '7daysAgo', 'endDate': 'today'}],
+                'metrics': [{'expression': 'ga:sessions'}]
+            }]
+        }
+        response = analytics.reports().batchGet(body=body).execute()
+        return jsonify(response)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+@app.route('/api/screenshot', methods=['POST'])
+def take_screenshot():
+    data = request.json
+    url = data.get('url')
+    if not url:
+        return jsonify({'error': 'URL is required'}), 400
+
+    options = Options()
+    options.headless = True
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    
+    try:
+        driver.get(url)
+        screenshot_path = f"{url.split('//')[-1].split('/')[0]}.png"
+        driver.save_screenshot(screenshot_path)
+        return jsonify({'message': 'Screenshot taken', 'path': screenshot_path})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        driver.quit()
+    
 if __name__ == '__main__':
     app.run(debug=True)
